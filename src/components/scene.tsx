@@ -39,15 +39,15 @@ export interface TargetAngle {
 const EarthdSphere: React.FC<TexturedSphereProps> = ({data, selectedIndex, sphereRadius = 2, onSelectItem, onHoverItem}) => {
 
   
-  const texture = useLoader(TextureLoader, "/textures/2_no_clouds_8k.jpg");
-  //const texture = useLoader(TextureLoader, "/textures/8081_earthmap10k.jpg");
-  //const texture = useLoader(TextureLoader, "/textures/earthmap4k.jpg");
-  //const texture = useLoader(TextureLoader, "/textures/Equirectangular-projection.jpg");
-  //const texture = useLoader(TextureLoader, "/textures/world.topo.bathy.200406.3x5400x2700.jpg");
-  //const texture = useLoader(TextureLoader, "/textures/eo_base_2020_clean_geo.jpg");
+  const texture = useLoader(TextureLoader, "textures/2_no_clouds_8k.jpg");
+  //const texture = useLoader(TextureLoader, "textures/8081_earthmap10k.jpg");
+  //const texture = useLoader(TextureLoader, "textures/earthmap4k.jpg");
+  //const texture = useLoader(TextureLoader, "textures/Equirectangular-projection.jpg");
+  //const texture = useLoader(TextureLoader, "textures/world.topo.bathy.200406.3x5400x2700.jpg");
+  //const texture = useLoader(TextureLoader, "textures/eo_base_2020_clean_geo.jpg");
 
   
-  const textureClouds = useLoader(TextureLoader, "/textures/clouds.png");
+  const textureClouds = useLoader(TextureLoader, "textures/clouds.png");
 
   const sphereRef = useRef<THREE.Mesh>(null);
 
@@ -102,7 +102,7 @@ const EarthdSphere: React.FC<TexturedSphereProps> = ({data, selectedIndex, spher
     return pt;
   }
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     setCloudsRotationY(cloudsRotationY + delta * 0.0008);
   })
 
@@ -174,10 +174,10 @@ const Scene: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [hoverIndex, setHoverIndex] = useState(-1);
 
-  const [data, setData] = useState([]);
-  const [dataRad, setDataRad] = useState([]);
+  const [data, setData] = useState<CityData[] >([]);
+  const [dataRad, setDataRad] = useState<CityData[] >([]);
 
-  const listRef = useRef(null);
+  const listRef = useRef<HTMLUListElement | null>(null);
 
 
 
@@ -185,10 +185,10 @@ const Scene: React.FC = () => {
 
   useEffect(() => {
 
-    fetch("/data/country-capital-lat-long-population.csv")
+    fetch("data/country-capital-lat-long-population.csv")
     .then((response) => response.text())
     .then((csvText) => {
-      let dat:CityData [] = Papa.parse(csvText, {header:true, dynamicTyping: true}).data;
+      let dat:CityData [] = Papa.parse(csvText, {header:true, dynamicTyping: true}).data as CityData [];
       dat = dat.sort((a, b) => {
         return a.City.localeCompare(b.City);
       });
@@ -232,7 +232,7 @@ const Scene: React.FC = () => {
           <Canvas className="" >
       
             <Environment
-              files="/textures/starmap_2020_4k (1).jpg" 
+              files="textures/starmap_2020_4k (1).jpg" 
               background  backgroundBlurriness={0.0} environmentIntensity={1} backgroundIntensity={0.15}
             />
 

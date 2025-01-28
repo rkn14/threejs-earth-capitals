@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { TargetAngle } from './scene';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 
 interface CameraControllerProps {
@@ -25,7 +25,7 @@ export const CameraController: React.FC<CameraControllerProps> = ({rotateSpeed, 
     const [currAngle, setCurrAngle] = useState<TargetAngle | null>({Latitude:0, Longitude:0});
     const [currRadius, setCurrRadius] = useState<number>(radiusFar);
 
-    const { camera, gl, scene } = useThree();
+    const { camera } = useThree();
 
 
     const shortestAngleDifference = (start: number, end: number) => {
@@ -110,7 +110,7 @@ export const CameraController: React.FC<CameraControllerProps> = ({rotateSpeed, 
     return (
         <>
             <group >
-                <PerspectiveCamera makeDefault position={targetPosition} />
+                <PerspectiveCamera makeDefault position={targetPosition?.toArray()} />
                 <OrbitControls 
                     ref={orbitControlRef} enabled={true} 
                     minDistance={radiusClose-0.08} maxDistance={radiusFar +1} 
